@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Voice Explorer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cursor: {
+              primary: '#2A5EE8',
+              dark: '#0F172A',
+              light: '#F8FAFC',
+              gray: '#64748B',
+              border: '#E2E8F0',
+            },
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+  <style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+  body {
+    background-color: #F8FAFC;
+    color: #0F172A;
+  }
+
+  /* Navbar */
+  .navbar {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    background: rgba(248, 250, 252, 0.85);
+  }
+
+  /* Card styling */
+  .card {
+    background: white;
+    border: 1px solid #E2E8F0;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+    transition: all 0.2s ease;
+  }
+  .card:hover {
+    box-shadow: 0 4px 6px rgba(15, 23, 42, 0.08);
+  }
+
+  /* Buttons */
+  .btn-primary {
+    background-color: #000000;
+    transition: all 0.2s ease;
+  }
+  .btn-primary:hover {
+    background-color: #1E4CC4;
+    box-shadow: 0 1px 2px rgba(42, 94, 232, 0.2);
+  }
+
+  .btn-danger {
+    background-color: #EF4444;
+    transition: all 0.2s ease;
+  }
+  .btn-danger:hover {
+    background-color: #DC2626;
+    box-shadow: 0 1px 2px rgba(239, 68, 68, 0.2);
+  }
+
+  .btn-success {
+    background-color: #10B981;
+    transition: all 0.2s ease;
+  }
+  .btn-success:hover {
+    background-color: #059669;
+    box-shadow: 0 1px 2px rgba(16, 185, 129, 0.2);
+  }
+
+  /* Toast animations */
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Audio player */
+  audio {
+    border-radius: 6px;
+    background: #F1F5F9;
+  }
+  audio::-webkit-media-controls-panel {
+    background: #F1F5F9;
+  }
+
+  /* Subtle glow effect */
+  .glow {
+    box-shadow: 0 0 0 1px rgba(42, 94, 232, 0.1);
+  }
+  .glow:hover {
+    box-shadow: 0 0 0 1px rgba(42, 94, 232, 0.2);
+  }
+
+  /* Status indicator */
+  .status-indicator {
+    position: relative;
+    padding-left: 1.25rem;
+  }
+  .status-indicator::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 9999px;
+    background-color: #64748B;
+  }
+  .status-recording::before {
+    background-color: #EF4444;
+    animation: pulse 1.5s infinite;
+  }
+  .status-processing::before {
+    background-color: #F59E0B;
+  }
+  .status-ready::before {
+    background-color: #10B981;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+  </style>
+</head>
+
+<body class="min-h-screen font-sans">
+  <!-- Navbar -->
+  <nav class="navbar fixed w-full z-10 border-b border-cursor-border">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between h-16 items-center">
+        <div class="flex-shrink-0 flex items-center">
+            <span class="text-xl font-bold">Erynx</span>
+        </div>
+        <div class="hidden md:flex items-center space-x-6">
+          <a href="#" class="text-cursor-gray hover:text-cursor-dark text-sm font-medium">Documentation</a>
+          <a href="#" class="text-cursor-gray hover:text-cursor-dark text-sm font-medium">Pricing</a>
+          <a href="#" class="text-cursor-gray hover:text-cursor-dark text-sm font-medium">Support</a>
+        </div>
+        <div class="flex items-center space-x-4">
+          <button class="text-cursor-gray hover:text-cursor-dark">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+            </svg>
+          </button>
+          <button class="btn-primary text-white px-4 py-2 rounded-md text-sm font-medium">
+            Get Started
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="pt-20 pb-12 px-4">
+    <div class="max-w-3xl mx-auto">
+      <!-- Header -->
+      <div class="text-center mb-10">
+        <h1 class="text-3xl font-bold text-cursor-dark mb-3">AI Voice Explorer</h1>
+        <p class="text-cursor-gray max-w-lg mx-auto">Record your voice and transform it with Murf AI's realistic voice synthesis technology.</p>
+      </div>
+
+      <!-- Recorder Card -->
+      <div class="card rounded-xl p-6 mb-8 glow">
+        <div class="flex flex-col items-center">
+          <!-- Status Indicator -->
+          <div id="recording-status" class="status-indicator mb-6 text-sm text-cursor-gray status-ready">Ready to record</div>
+          
+<!-- Recording Controls -->
+<div class="flex flex-col sm:flex-row gap-3 mb-8 w-full max-w-xs mx-auto">
+  <button id="start-record" class="btn-success text-white px-6 py-3 rounded-lg font-medium flex items-center justify-center gap-2 transition-all hover:scale-[1.02]">
+    <div class="relative">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z" />
+        <path d="M15.5 12a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z" />
+      </svg>
+      <div class="absolute inset-0 rounded-full bg-current opacity-10 animate-ping"></div>
+    </div>
+    <span>Start Recording</span>
+  </button>
+  
+  <button id="stop-record" class="btn-danger text-white px-6 py-3 rounded-lg font-medium opacity-70 cursor-not-allowed flex items-center justify-center gap-2 transition-all" disabled>
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+      <rect x="6" y="6" width="12" height="12" rx="1" />
+    </svg>
+    <span>Stop</span>
+  </button>
+</div>
+
+          <!-- Audio Players -->
+          <div class="w-full space-y-6">
+            <div>
+              <h3 class="text-sm font-medium text-cursor-gray mb-2">Your Recording</h3>
+              <audio id="echo-player" controls class="w-full hidden"></audio>
+              <div id="playback-placeholder" class="bg-cursor-light border border-cursor-border rounded-lg p-8 text-center text-cursor-gray">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mx-auto mb-2 text-cursor-gray" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                </svg>
+                <p>Your recording will appear here</p>
+              </div>
+            </div>
+
+            <div>
+              <h3 class="text-sm font-medium text-cursor-gray mb-2">Murf AI Voice</h3>
+              <audio id="murf-player" controls class="w-full hidden"></audio>
+              <div id="murf-placeholder" class="bg-cursor-light border border-cursor-border rounded-lg p-8 text-center text-cursor-gray">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mx-auto mb-2 text-cursor-gray" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15.536a5 5 0 001.414 1.414m2.828-9.9a9 9 0 012.728-2.728" />
+                </svg>
+                <p>Murf AI audio will appear here</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Transcription Card -->
+      <div class="card rounded-xl p-6">
+        <h2 class="text-lg font-semibold text-cursor-dark mb-4 flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 0v12h8V4H6z" clip-rule="evenodd" />
+          </svg>
+          Transcription
+        </h2>
+        <div id="transcription" class="bg-cursor-light rounded-lg p-4 text-sm text-cursor-gray">
+          No transcription yet. Record and upload to view it here.
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Toasts -->
+  <div id="popup" class="hidden fixed top-4 right-4 bg-white px-4 py-2.5 rounded-lg shadow-sm border border-cursor-border text-sm font-medium z-50 flex items-center gap-2 animate-slideIn">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-green-500" viewBox="0 0 20 20" fill="currentColor">
+      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+    </svg>
+    Audio uploaded successfully!
+  </div>
+  <div id="error-popup" class="hidden fixed top-4 right-4 bg-white px-4 py-2.5 rounded-lg shadow-sm border border-cursor-border text-sm font-medium z-50 flex items-center gap-2 animate-slideIn">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-red-500" viewBox="0 0 20 20" fill="currentColor">
+      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+    </svg>
+    <span id="error-message">Error occurred</span>
+  </div>
+  <div id="loading" class="hidden fixed top-4 right-4 bg-white px-4 py-2.5 rounded-lg shadow-sm border border-cursor-border text-sm font-medium z-50 flex items-center gap-2 animate-slideIn">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-500 animate-spin" viewBox="0 0 20 20" fill="currentColor">
+      <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" />
+    </svg>
+    Uploading audio...
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-gray-50 border-t border-gray-200 py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-2 md:grid-cols-5 gap-8">
+        <div class="col-span-2">
+          <h3 class="text-lg font-semibold mb-4">Erynx</h3>
+          <p class="text-gray-600 text-sm">
+            The most realistic AI voice platform for creators, developers, and businesses.
+          </p>
+          <div class="flex space-x-4 mt-4">
+            <a href="#" class="text-gray-500 hover:text-gray-700"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="text-gray-500 hover:text-gray-700"><i class="fab fa-linkedin"></i></a>
+            <a href="#" class="text-gray-500 hover:text-gray-700"><i class="fab fa-github"></i></a>
+            <a href="#" class="text-gray-500 hover:text-gray-700"><i class="fab fa-discord"></i></a>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">Product</h4>
+          <ul class="space-y-2">
+            <li><a href="#" class="text-gray-600 footer-link text-sm">Features</a></li>
+            <li><a href="#" class="text-gray-600 footer-link text-sm">Pricing</a></li>
+            <li><a href="#" class="text-gray-600 footer-link text-sm">API</a></li>
+            <li><a href="#" class="text-gray-600 footer-link text-sm">Integrations</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h4 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">Resources</h4>
+          <ul class="space-y-2">
+            <li><a href="#" class="text-gray-600 footer-link text-sm">Documentation</a></li>
+            <li><a href="#" class="text-gray-600 footer-link text-sm">Blog</a></li>
+            <li><a href="#" class="text-gray-600 footer-link text-sm">Community</a></li>
+            <li><a href="#" class="text-gray-600 footer-link text-sm">Support</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h4 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">Company</h4>
+          <ul class="space-y-2">
+            <li><a href="#" class="text-gray-600 footer-link text-sm">About</a></li>
+            <li><a href="#" class="text-gray-600 footer-link text-sm">Careers</a></li>
+            <li><a href="#" class="text-gray-600 footer-link text-sm">Privacy</a></li>
+            <li><a href="#" class="text-gray-600 footer-link text-sm">Terms</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="mt-12 pt-8 border-t border-gray-200 flex flex-col md:flex-row justify-between items-center">
+        <p class="text-gray-500 text-sm">
+          © 2025 Erynx . All rights reserved.
+        </p>
+        <div class="flex space-x-6 mt-4 md:mt-0">
+          <a href="#" class="text-gray-500 hover:text-gray-700 text-sm footer-link">Privacy Policy</a>
+          <a href="#" class="text-gray-500 hover:text-gray-700 text-sm footer-link">Terms of Service</a>
+          <a href="#" class="text-gray-500 hover:text-gray-700 text-sm footer-link">Cookies</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+<script>
+  // Toast Helpers
+  const showPopup = () => { 
+    document.getElementById("popup").classList.remove("hidden"); 
+    setTimeout(() => document.getElementById("popup").classList.add("hidden"), 3000); 
+  }
+  
+  const showErrorPopup = msg => { 
+    document.getElementById("error-message").textContent = msg; 
+    document.getElementById("error-popup").classList.remove("hidden"); 
+    setTimeout(() => document.getElementById("error-popup").classList.add("hidden"), 3000); 
+  }
+  
+  const showLoading = () => document.getElementById("loading").classList.remove("hidden");
+  const hideLoading = () => document.getElementById("loading").classList.add("hidden");
+
+  let mediaRecorder, echoChunks = [];
+  const startBtn = document.getElementById('start-record');
+  const stopBtn = document.getElementById('stop-record');
+  const echoPlayer = document.getElementById('echo-player');
+  const statusText = document.getElementById('recording-status');
+  const playbackPlaceholder = document.getElementById('playback-placeholder');
+  const transcriptionOutput = document.getElementById('transcription');
+
+  // Update status indicator
+  const updateStatus = (status) => {
+    statusText.className = `status-indicator mb-6 text-sm text-cursor-gray status-${status.toLowerCase()}`;
+    statusText.textContent = status === 'ready' ? 'Ready to record' : 
+                           status === 'recording' ? 'Recording...' : 'Processing...';
+  };
+
+  startBtn.addEventListener('click', async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      mediaRecorder = new MediaRecorder(stream);
+      echoChunks = [];
+
+      mediaRecorder.ondataavailable = e => { if (e.data.size > 0) echoChunks.push(e.data); };
+
+      mediaRecorder.onstop = async () => {
+        const blob = new Blob(echoChunks, { type: 'audio/webm' });
+        const url = URL.createObjectURL(blob);
+
+        // Set original recording audio
+        echoPlayer.src = url;
+        echoPlayer.classList.remove('hidden');
+        playbackPlaceholder.classList.add('hidden');
+
+        // Hide Murf audio initially
+        const murfPlayer = document.getElementById('murf-player');
+        const murfPlaceholder = document.getElementById('murf-placeholder');
+        murfPlayer.classList.add('hidden');
+        murfPlaceholder.classList.remove('hidden');
+
+        updateStatus('processing');
+        showLoading();
+
+        try {
+          const formData = new FormData();
+          formData.append('file', blob, 'recording.webm');
+
+          // Upload audio file
+          await fetch('http://localhost:8000/upload', { method: 'POST', body: formData });
+          showPopup();
+
+          // Transcribe audio file
+          const transRes = await fetch('http://localhost:8000/transcribe/file', { method: 'POST', body: formData });
+          const transData = await transRes.json();
+          transcriptionOutput.textContent = transData.transcription || "No transcription returned.";
+
+          // Murf AI TTS: send JSON text + voice to /murf-tts-json endpoint
+          if (transData.transcription) {
+            const ttsRes = await fetch('http://localhost:8000/murf-tts-json', {
+              method: 'POST',
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ text: transData.transcription, voice: 'default' })
+            });
+
+            if (!ttsRes.ok) throw new Error("Murf AI TTS failed");
+
+            const audioBlob = await ttsRes.blob();
+
+            // Play Murf AI audio in second player
+            const murfAudioUrl = URL.createObjectURL(audioBlob);
+            murfPlayer.src = murfAudioUrl;
+            murfPlayer.classList.remove('hidden');
+            murfPlaceholder.classList.add('hidden');
+          }
+
+        } catch (err) {
+          console.error(err);
+          showErrorPopup("Error during upload/transcribe/TTS");
+        }
+        hideLoading();
+        updateStatus('ready');
+      };
+
+      mediaRecorder.start();
+      startBtn.disabled = true;
+      stopBtn.disabled = false;
+      stopBtn.classList.remove('opacity-70', 'cursor-not-allowed');
+      updateStatus('recording');
+    } catch (err) {
+      console.error(err);
+      showErrorPopup("Microphone access denied");
+    }
+  });
+
+  stopBtn.addEventListener('click', () => {
+    if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+      mediaRecorder.stop();
+      startBtn.disabled = false;
+      stopBtn.disabled = true;
+      stopBtn.classList.add('opacity-70', 'cursor-not-allowed');
+      mediaRecorder.stream.getTracks().forEach(track => track.stop());
+    }
+  });
+</script>
+</body>
+</html>

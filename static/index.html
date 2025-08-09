@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Murf AI Voice Platform - AS</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .navbar {
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    .footer-link:hover {
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body class="bg-white text-black min-h-screen flex flex-col">
+  <!-- Navbar -->
+  <nav class="navbar bg-white/80 border-b border-gray-200 fixed w-full z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between h-16 items-center">
+        <!-- Logo -->
+        <div class="flex-shrink-0 flex items-center">
+          <span class="text-xl font-bold">Erynx </span>
+        </div>
+        
+        <!-- Desktop Menu -->
+        <div class="hidden md:flex items-center space-x-8">
+          <a href="#" class="text-gray-900 font-medium">Products</a>
+          <a href="#" class="text-gray-600 hover:text-gray-900">Solutions</a>
+          <a href="#" class="text-gray-600 hover:text-gray-900">Pricing</a>
+          <a href="#" class="text-gray-600 hover:text-gray-900">Resources</a>
+          <a href="#" class="text-gray-600 hover:text-gray-900">Company</a>
+        </div>
+        
+        <!-- Right Buttons -->
+        <div class="flex items-center space-x-4">
+          <a href="#" class="hidden md:block text-gray-600 hover:text-gray-900">Sign in</a>
+          <button class="bg-black text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-800 transition">
+            Get started
+          </button>
+          <button class="md:hidden text-gray-600">
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="flex-grow flex items-center justify-center px-4 pt-24 pb-16">
+    <section class="text-center max-w-4xl mx-auto py-12">
+      <h1 class="text-4xl sm:text-5xl font-semibold mb-6">
+        The most realistic voice AI platform
+      </h1>
+      <p class="text-lg sm:text-xl text-gray-600 mb-10 px-4">
+        AI voice models built with Murf power everything from lifelike conversational agents 
+        to high-quality audio for videos, audiobooks, and apps.
+      </p>
+
+      <div class="flex flex-col items-center gap-4">
+        <button onclick="handleExploreClick()" 
+          class="px-6 py-3 bg-gray-900 text-white font-semibold rounded-full hover:bg-gray-800 transition">
+          EXPLORE
+        </button>
+      </div>
+    </section>
+
+    <!-- Top-Right Popup -->
+    <div id="popup" class="hidden absolute top-6 right-6 bg-white text-black px-5 py-3 rounded-lg shadow-md border border-gray-300 text-sm font-medium z-50">
+      🎉 Voice Agent Exploration Activated!
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-50 border-t border-gray-200 py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-2 md:grid-cols-5 gap-8">
+        <div class="col-span-2">
+          <h3 class="text-lg font-semibold mb-4">Erynx</h3>
+          <p class="text-gray-600 text-sm">
+            The most realistic AI voice platform for creators, developers, and businesses.
+          </p>
+          <div class="flex space-x-4 mt-4">
+            <a href="#" class="text-gray-500 hover:text-gray-700"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="text-gray-500 hover:text-gray-700"><i class="fab fa-linkedin"></i></a>
+            <a href="#" class="text-gray-500 hover:text-gray-700"><i class="fab fa-github"></i></a>
+            <a href="#" class="text-gray-500 hover:text-gray-700"><i class="fab fa-discord"></i></a>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">Product</h4>
+          <ul class="space-y-2">
+            <li><a href="#" class="text-gray-600 footer-link text-sm">Features</a></li>
+            <li><a href="#" class="text-gray-600 footer-link text-sm">Pricing</a></li>
+            <li><a href="#" class="text-gray-600 footer-link text-sm">API</a></li>
+            <li><a href="#" class="text-gray-600 footer-link text-sm">Integrations</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h4 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">Resources</h4>
+          <ul class="space-y-2">
+            <li><a href="#" class="text-gray-600 footer-link text-sm">Documentation</a></li>
+            <li><a href="#" class="text-gray-600 footer-link text-sm">Blog</a></li>
+            <li><a href="#" class="text-gray-600 footer-link text-sm">Community</a></li>
+            <li><a href="#" class="text-gray-600 footer-link text-sm">Support</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h4 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">Company</h4>
+          <ul class="space-y-2">
+            <li><a href="#" class="text-gray-600 footer-link text-sm">About</a></li>
+            <li><a href="#" class="text-gray-600 footer-link text-sm">Careers</a></li>
+            <li><a href="#" class="text-gray-600 footer-link text-sm">Privacy</a></li>
+            <li><a href="#" class="text-gray-600 footer-link text-sm">Terms</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="mt-12 pt-8 border-t border-gray-200 flex flex-col md:flex-row justify-between items-center">
+        <p class="text-gray-500 text-sm">
+          © 2025 Erynx. All rights reserved.
+        </p>
+        <div class="flex space-x-6 mt-4 md:mt-0">
+          <a href="#" class="text-gray-500 hover:text-gray-700 text-sm footer-link">Privacy Policy</a>
+          <a href="#" class="text-gray-500 hover:text-gray-700 text-sm footer-link">Terms of Service</a>
+          <a href="#" class="text-gray-500 hover:text-gray-700 text-sm footer-link">Cookies</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function showPopup() {
+      const popup = document.getElementById("popup");
+      popup.classList.remove("hidden");
+      setTimeout(() => popup.classList.add("hidden"), 1000);
+    }
+
+    function handleExploreClick() {
+      showPopup();
+      setTimeout(() => {
+        window.open('/static/explore.html', '_blank');
+      }, 1000);
+    }
+  </script>
+</body>
+</html>
