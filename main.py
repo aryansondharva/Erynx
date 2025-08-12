@@ -16,6 +16,12 @@ import requests
 import shutil
 import assemblyai as aai
 from io import BytesIO
+from fastapi import FastAPI, File, UploadFile, Form, HTTPException
+from fastapi.responses import StreamingResponse
+from dotenv import load_dotenv
+from io import BytesIO
+import requests
+import os
 
 # ============================================================
 # 🔹 Load API Keys
