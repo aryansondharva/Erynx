@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AI Voice Explorer</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -26,113 +27,137 @@
     }
   </script>
   <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-  body {
-    background-color: #F8FAFC;
-    color: #0F172A;
-  }
+    body {
+      background-color: #F8FAFC;
+      color: #0F172A;
+    }
 
-  /* Navbar */
-  .navbar {
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    background: rgba(248, 250, 252, 0.85);
-  }
+    /* Navbar */
+    .navbar {
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      background: rgba(248, 250, 252, 0.85);
+    }
 
-  /* Card styling */
-  .card {
-    background: white;
-    border: 1px solid #E2E8F0;
-    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
-    transition: all 0.2s ease;
-  }
-  .card:hover {
-    box-shadow: 0 4px 6px rgba(15, 23, 42, 0.08);
-  }
+    /* Card styling */
+    .card {
+      background: white;
+      border: 1px solid #E2E8F0;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+      transition: all 0.2s ease;
+    }
 
-  /* Buttons */
-  .btn-primary {
-    background-color: #000000;
-    transition: all 0.2s ease;
-  }
-  .btn-primary:hover {
-    background-color: #1E4CC4;
-    box-shadow: 0 1px 2px rgba(42, 94, 232, 0.2);
-  }
+    .card:hover {
+      box-shadow: 0 4px 6px rgba(15, 23, 42, 0.08);
+    }
 
-  .btn-danger {
-    background-color: #EF4444;
-    transition: all 0.2s ease;
-  }
-  .btn-danger:hover {
-    background-color: #DC2626;
-    box-shadow: 0 1px 2px rgba(239, 68, 68, 0.2);
-  }
+    /* Buttons */
+    .btn-primary {
+      background-color: #000000;
+      transition: all 0.2s ease;
+    }
 
-  .btn-success {
-    background-color: #10B981;
-    transition: all 0.2s ease;
-  }
-  .btn-success:hover {
-    background-color: #059669;
-    box-shadow: 0 1px 2px rgba(16, 185, 129, 0.2);
-  }
+    .btn-primary:hover {
+      background-color: #1E4CC4;
+      box-shadow: 0 1px 2px rgba(42, 94, 232, 0.2);
+    }
 
-  /* Toast animations */
-  @keyframes slideIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+    .btn-danger {
+      background-color: #EF4444;
+      transition: all 0.2s ease;
+    }
 
-  /* Audio player */
-  audio {
-    border-radius: 6px;
-    background: #F1F5F9;
-  }
-  audio::-webkit-media-controls-panel {
-    background: #F1F5F9;
-  }
+    .btn-danger:hover {
+      background-color: #DC2626;
+      box-shadow: 0 1px 2px rgba(239, 68, 68, 0.2);
+    }
 
-  /* Subtle glow effect */
-  .glow {
-    box-shadow: 0 0 0 1px rgba(42, 94, 232, 0.1);
-  }
-  .glow:hover {
-    box-shadow: 0 0 0 1px rgba(42, 94, 232, 0.2);
-  }
+    .btn-success {
+      background-color: #10B981;
+      transition: all 0.2s ease;
+    }
 
-  /* Status indicator */
-  .status-indicator {
-    position: relative;
-    padding-left: 1.25rem;
-  }
-  .status-indicator::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 0.75rem;
-    height: 0.75rem;
-    border-radius: 9999px;
-    background-color: #64748B;
-  }
-  .status-recording::before {
-    background-color: #EF4444;
-    animation: pulse 1.5s infinite;
-  }
-  .status-processing::before {
-    background-color: #F59E0B;
-  }
-  .status-ready::before {
-    background-color: #10B981;
-  }
+    .btn-success:hover {
+      background-color: #059669;
+      box-shadow: 0 1px 2px rgba(16, 185, 129, 0.2);
+    }
 
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
-  }
+    /* Toast animations */
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Audio player */
+    audio {
+      border-radius: 6px;
+      background: #F1F5F9;
+    }
+
+    audio::-webkit-media-controls-panel {
+      background: #F1F5F9;
+    }
+
+    /* Subtle glow effect */
+    .glow {
+      box-shadow: 0 0 0 1px rgba(42, 94, 232, 0.1);
+    }
+
+    .glow:hover {
+      box-shadow: 0 0 0 1px rgba(42, 94, 232, 0.2);
+    }
+
+    /* Status indicator */
+    .status-indicator {
+      position: relative;
+      padding-left: 1.25rem;
+    }
+
+    .status-indicator::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 0.75rem;
+      height: 0.75rem;
+      border-radius: 9999px;
+      background-color: #64748B;
+    }
+
+    .status-recording::before {
+      background-color: #EF4444;
+      animation: pulse 1.5s infinite;
+    }
+
+    .status-processing::before {
+      background-color: #F59E0B;
+    }
+
+    .status-ready::before {
+      background-color: #10B981;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.5;
+      }
+    }
   </style>
 </head>
 
@@ -142,7 +167,7 @@
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between h-16 items-center">
         <div class="flex-shrink-0 flex items-center">
-            <span class="text-xl font-bold">Erynx</span>
+          <span class="text-xl font-bold">Erynx</span>
         </div>
         <div class="hidden md:flex items-center space-x-6">
           <a href="#" class="text-cursor-gray hover:text-cursor-dark text-sm font-medium">Documentation</a>
@@ -152,7 +177,9 @@
         <div class="flex items-center space-x-4">
           <button class="text-cursor-gray hover:text-cursor-dark">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+              <path fill-rule="evenodd"
+                d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                clip-rule="evenodd" />
             </svg>
           </button>
           <button class="btn-primary text-white px-4 py-2 rounded-md text-sm font-medium">
@@ -169,44 +196,52 @@
       <!-- Header -->
       <div class="text-center mb-10">
         <h1 class="text-3xl font-bold text-cursor-dark mb-3">AI Voice Explorer</h1>
-        <p class="text-cursor-gray max-w-lg mx-auto">Record your voice and transform it with Murf AI's realistic voice synthesis technology.</p>
+        <p class="text-cursor-gray max-w-lg mx-auto">Record your voice and transform it with Murf AI's realistic voice
+          synthesis technology.</p>
       </div>
 
       <!-- Recorder Card -->
       <div class="card rounded-xl p-6 mb-8 glow">
         <div class="flex flex-col items-center">
           <!-- Status Indicator -->
-          <div id="recording-status" class="status-indicator mb-6 text-sm text-cursor-gray status-ready">Ready to record</div>
-          
-<!-- Recording Controls -->
-<div class="flex flex-col sm:flex-row gap-3 mb-8 w-full max-w-xs mx-auto">
-  <button id="start-record" class="btn-success text-white px-6 py-3 rounded-lg font-medium flex items-center justify-center gap-2 transition-all hover:scale-[1.02]">
-    <div class="relative">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z" />
-        <path d="M15.5 12a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z" />
-      </svg>
-      <div class="absolute inset-0 rounded-full bg-current opacity-10 animate-ping"></div>
-    </div>
-    <span>Start Recording</span>
-  </button>
-  
-  <button id="stop-record" class="btn-danger text-white px-6 py-3 rounded-lg font-medium opacity-70 cursor-not-allowed flex items-center justify-center gap-2 transition-all" disabled>
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
-      <rect x="6" y="6" width="12" height="12" rx="1" />
-    </svg>
-    <span>Stop</span>
-  </button>
-</div>
+          <div id="recording-status" class="status-indicator mb-6 text-sm text-cursor-gray status-ready">Ready to record
+          </div>
+
+          <!-- Recording Controls -->
+          <div class="flex flex-col sm:flex-row gap-3 mb-8 w-full max-w-xs mx-auto">
+            <button id="start-record"
+              class="btn-success text-white px-6 py-3 rounded-lg font-medium flex items-center justify-center gap-2 transition-all hover:scale-[1.02]">
+              <div class="relative">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z" />
+                  <path d="M15.5 12a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z" />
+                </svg>
+                <div class="absolute inset-0 rounded-full bg-current opacity-10 animate-ping"></div>
+              </div>
+              <span>Start Recording</span>
+            </button>
+
+            <button id="stop-record"
+              class="btn-danger text-white px-6 py-3 rounded-lg font-medium opacity-70 cursor-not-allowed flex items-center justify-center gap-2 transition-all"
+              disabled>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+                <rect x="6" y="6" width="12" height="12" rx="1" />
+              </svg>
+              <span>Stop</span>
+            </button>
+          </div>
 
           <!-- Audio Players -->
           <div class="w-full space-y-6">
             <div>
               <h3 class="text-sm font-medium text-cursor-gray mb-2">Your Recording</h3>
               <audio id="echo-player" controls class="w-full hidden"></audio>
-              <div id="playback-placeholder" class="bg-cursor-light border border-cursor-border rounded-lg p-8 text-center text-cursor-gray">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mx-auto mb-2 text-cursor-gray" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+              <div id="playback-placeholder"
+                class="bg-cursor-light border border-cursor-border rounded-lg p-8 text-center text-cursor-gray">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mx-auto mb-2 text-cursor-gray" fill="none"
+                  viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                    d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
                 </svg>
                 <p>Your recording will appear here</p>
               </div>
@@ -215,9 +250,12 @@
             <div>
               <h3 class="text-sm font-medium text-cursor-gray mb-2">Murf AI Voice</h3>
               <audio id="murf-player" controls class="w-full hidden"></audio>
-              <div id="murf-placeholder" class="bg-cursor-light border border-cursor-border rounded-lg p-8 text-center text-cursor-gray">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mx-auto mb-2 text-cursor-gray" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15.536a5 5 0 001.414 1.414m2.828-9.9a9 9 0 012.728-2.728" />
+              <div id="murf-placeholder"
+                class="bg-cursor-light border border-cursor-border rounded-lg p-8 text-center text-cursor-gray">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mx-auto mb-2 text-cursor-gray" fill="none"
+                  viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                    d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15.536a5 5 0 001.414 1.414m2.828-9.9a9 9 0 012.728-2.728" />
                 </svg>
                 <p>Murf AI audio will appear here</p>
               </div>
@@ -230,7 +268,8 @@
       <div class="card rounded-xl p-6">
         <h2 class="text-lg font-semibold text-cursor-dark mb-4 flex items-center gap-2">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 0v12h8V4H6z" clip-rule="evenodd" />
+            <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 0v12h8V4H6z"
+              clip-rule="evenodd" />
           </svg>
           Transcription
         </h2>
@@ -242,21 +281,31 @@
   </main>
 
   <!-- Toasts -->
-  <div id="popup" class="hidden fixed top-4 right-4 bg-white px-4 py-2.5 rounded-lg shadow-sm border border-cursor-border text-sm font-medium z-50 flex items-center gap-2 animate-slideIn">
+  <div id="popup"
+    class="hidden fixed top-4 right-4 bg-white px-4 py-2.5 rounded-lg shadow-sm border border-cursor-border text-sm font-medium z-50 flex items-center gap-2 animate-slideIn">
     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-green-500" viewBox="0 0 20 20" fill="currentColor">
-      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+      <path fill-rule="evenodd"
+        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+        clip-rule="evenodd" />
     </svg>
     Audio uploaded successfully!
   </div>
-  <div id="error-popup" class="hidden fixed top-4 right-4 bg-white px-4 py-2.5 rounded-lg shadow-sm border border-cursor-border text-sm font-medium z-50 flex items-center gap-2 animate-slideIn">
+  <div id="error-popup"
+    class="hidden fixed top-4 right-4 bg-white px-4 py-2.5 rounded-lg shadow-sm border border-cursor-border text-sm font-medium z-50 flex items-center gap-2 animate-slideIn">
     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-red-500" viewBox="0 0 20 20" fill="currentColor">
-      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+      <path fill-rule="evenodd"
+        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+        clip-rule="evenodd" />
     </svg>
     <span id="error-message">Error occurred</span>
   </div>
-  <div id="loading" class="hidden fixed top-4 right-4 bg-white px-4 py-2.5 rounded-lg shadow-sm border border-cursor-border text-sm font-medium z-50 flex items-center gap-2 animate-slideIn">
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-500 animate-spin" viewBox="0 0 20 20" fill="currentColor">
-      <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" />
+  <div id="loading"
+    class="hidden fixed top-4 right-4 bg-white px-4 py-2.5 rounded-lg shadow-sm border border-cursor-border text-sm font-medium z-50 flex items-center gap-2 animate-slideIn">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-500 animate-spin" viewBox="0 0 20 20"
+      fill="currentColor">
+      <path fill-rule="evenodd"
+        d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z"
+        clip-rule="evenodd" />
     </svg>
     Uploading audio...
   </div>
@@ -277,7 +326,7 @@
             <a href="#" class="text-gray-500 hover:text-gray-700"><i class="fab fa-discord"></i></a>
           </div>
         </div>
-        
+
         <div>
           <h4 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">Product</h4>
           <ul class="space-y-2">
@@ -287,7 +336,7 @@
             <li><a href="#" class="text-gray-600 footer-link text-sm">Integrations</a></li>
           </ul>
         </div>
-        
+
         <div>
           <h4 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">Resources</h4>
           <ul class="space-y-2">
@@ -297,7 +346,7 @@
             <li><a href="#" class="text-gray-600 footer-link text-sm">Support</a></li>
           </ul>
         </div>
-        
+
         <div>
           <h4 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">Company</h4>
           <ul class="space-y-2">
@@ -308,7 +357,7 @@
           </ul>
         </div>
       </div>
-      
+
       <div class="mt-12 pt-8 border-t border-gray-200 flex flex-col md:flex-row justify-between items-center">
         <p class="text-gray-500 text-sm">
           © 2025 Erynx . All rights reserved.
@@ -322,123 +371,346 @@
     </div>
   </footer>
 
-<script>
-  // Toast Helpers
-  const showPopup = () => { 
-    document.getElementById("popup").classList.remove("hidden"); 
-    setTimeout(() => document.getElementById("popup").classList.add("hidden"), 3000); 
-  }
-  
-  const showErrorPopup = msg => { 
-    document.getElementById("error-message").textContent = msg; 
-    document.getElementById("error-popup").classList.remove("hidden"); 
-    setTimeout(() => document.getElementById("error-popup").classList.add("hidden"), 3000); 
-  }
-  
-  const showLoading = () => document.getElementById("loading").classList.remove("hidden");
-  const hideLoading = () => document.getElementById("loading").classList.add("hidden");
+  <script>
+    /* ====== DAY 9 JS: record -> transcribe -> llm/query -> play audio ====== */
 
-  let mediaRecorder, echoChunks = [];
-  const startBtn = document.getElementById('start-record');
-  const stopBtn = document.getElementById('stop-record');
-  const echoPlayer = document.getElementById('echo-player');
-  const statusText = document.getElementById('recording-status');
-  const playbackPlaceholder = document.getElementById('playback-placeholder');
-  const transcriptionOutput = document.getElementById('transcription');
+    // Change this to your backend origin if needed
+    const BASE_URL = 'http://localhost:8000';
 
-  // Update status indicator
-  const updateStatus = (status) => {
-    statusText.className = `status-indicator mb-6 text-sm text-cursor-gray status-${status.toLowerCase()}`;
-    statusText.textContent = status === 'ready' ? 'Ready to record' : 
-                           status === 'recording' ? 'Recording...' : 'Processing...';
-  };
+    // Toast Helpers
+    const showPopup = () => {
+      document.getElementById("popup").classList.remove("hidden");
+      setTimeout(() => document.getElementById("popup").classList.add("hidden"), 3000);
+    }
 
-  startBtn.addEventListener('click', async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      mediaRecorder = new MediaRecorder(stream);
-      echoChunks = [];
+    const showErrorPopup = msg => {
+      document.getElementById("error-message").textContent = msg;
+      document.getElementById("error-popup").classList.remove("hidden");
+      setTimeout(() => document.getElementById("error-popup").classList.add("hidden"), 4000);
+    }
 
-      mediaRecorder.ondataavailable = e => { if (e.data.size > 0) echoChunks.push(e.data); };
+    const showLoading = (txt = "Uploading audio...") => {
+      document.getElementById("loading").classList.remove("hidden");
+      document.getElementById("loading").querySelector('svg').classList.add('animate-spin');
+    };
+    const hideLoading = () => {
+      document.getElementById("loading").classList.add("hidden");
+      document.getElementById("loading").querySelector('svg').classList.remove('animate-spin');
+    };
 
-      mediaRecorder.onstop = async () => {
-        const blob = new Blob(echoChunks, { type: 'audio/webm' });
-        const url = URL.createObjectURL(blob);
+    let mediaRecorder, echoChunks = [];
+    const startBtn = document.getElementById('start-record');
+    const stopBtn = document.getElementById('stop-record');
+    const echoPlayer = document.getElementById('echo-player');
+    const statusText = document.getElementById('recording-status');
+    const playbackPlaceholder = document.getElementById('playback-placeholder');
+    const transcriptionOutput = document.getElementById('transcription');
+    const murfPlayer = document.getElementById('murf-player');
+    const murfPlaceholder = document.getElementById('murf-placeholder');
 
-        // Set original recording audio
-        echoPlayer.src = url;
-        echoPlayer.classList.remove('hidden');
-        playbackPlaceholder.classList.add('hidden');
+    // Update status indicator
+    const updateStatus = (status) => {
+      statusText.className = `status-indicator mb-6 text-sm text-cursor-gray status-${status.toLowerCase()}`;
+      statusText.textContent = status === 'ready' ? 'Ready to record' :
+        status === 'recording' ? 'Recording...' : 'Processing...';
+    };
 
-        // Hide Murf audio initially
-        const murfPlayer = document.getElementById('murf-player');
-        const murfPlaceholder = document.getElementById('murf-placeholder');
-        murfPlayer.classList.add('hidden');
-        murfPlaceholder.classList.remove('hidden');
+    // helper: send formData to endpoint and return JSON
+    async function postFormDataJson(url, formData) {
+      const res = await fetch(url, { method: 'POST', body: formData });
+      const text = await res.text(); // handle non-json errors
+      try { return { ok: res.ok, status: res.status, json: JSON.parse(text) }; }
+      catch (e) { return { ok: res.ok, status: res.status, text }; }
+    }
 
-        updateStatus('processing');
-        showLoading();
+    startBtn.addEventListener('click', async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        mediaRecorder = new MediaRecorder(stream);
+        echoChunks = [];
 
-        try {
-          const formData = new FormData();
-          formData.append('file', blob, 'recording.webm');
+        mediaRecorder.ondataavailable = e => { if (e.data && e.data.size > 0) echoChunks.push(e.data); };
 
-          // Upload audio file
-          await fetch('http://localhost:8000/upload', { method: 'POST', body: formData });
-          showPopup();
+        mediaRecorder.onstop = async () => {
+          // build blob (we use webm because MediaRecorder default is often webm)
+          const blob = new Blob(echoChunks, { type: 'audio/webm' });
+          const url = URL.createObjectURL(blob);
 
-          // Transcribe audio file
-          const transRes = await fetch('http://localhost:8000/transcribe/file', { method: 'POST', body: formData });
-          const transData = await transRes.json();
-          transcriptionOutput.textContent = transData.transcription || "No transcription returned.";
+          // show the original recording
+          echoPlayer.src = url;
+          echoPlayer.classList.remove('hidden');
+          playbackPlaceholder.classList.add('hidden');
 
-          // Murf AI TTS: send JSON text + voice to /murf-tts-json endpoint
-          if (transData.transcription) {
-            const ttsRes = await fetch('http://localhost:8000/murf-tts-json', {
-              method: 'POST',
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ text: transData.transcription, voice: 'default' })
+          // hide murf audio until ready
+          murfPlayer.classList.add('hidden');
+          murfPlaceholder.classList.remove('hidden');
+
+          updateStatus('processing');
+          showLoading();
+
+          try {
+            const formData = new FormData();
+            // NOTE: server endpoints expect field name "file" for transcribe/file and llm/query accepts UploadFile param
+            formData.append('file', blob, 'recording.webm');
+
+            // 1) Get quick transcription (so user can see what they said)
+            const transRes = await fetch(`${BASE_URL}/transcribe/file`, { method: 'POST', body: formData });
+            if (!transRes.ok) {
+              // Try to parse error message
+              const errText = await transRes.text().catch(() => 'Transcription error');
+              console.warn('Transcribe failed:', transRes.status, errText);
+              transcriptionOutput.textContent = "Transcription failed.";
+            } else {
+              const transData = await transRes.json();
+              transcriptionOutput.textContent = transData.transcription || "No transcription returned.";
+              showPopup();
+            }
+
+            // 2) Call Day 9 full pipeline -> /llm/query which returns MP3 audio
+            // Re-create formData because Fetch bodies can be consumed only once
+            const form2 = new FormData();
+            form2.append('file', blob, 'recording.webm');
+            // optionally send voice type: default, narrator, support, etc.
+            form2.append('voice', 'default');
+
+            const llmRes = await fetch(`${BASE_URL}/llm/query`, { method: 'POST', body: form2 });
+
+            if (!llmRes.ok) {
+              // try to read text error
+              const errText = await llmRes.text().catch(() => 'LLM pipeline failed');
+              console.error('llm/query failed', llmRes.status, errText);
+              showErrorPopup('LLM pipeline failed — check server logs.');
+            } else {
+              const audioBlob = await llmRes.blob();
+
+              // create URL and play
+              const murfAudioUrl = URL.createObjectURL(audioBlob);
+              murfPlayer.src = murfAudioUrl;
+              murfPlayer.classList.remove('hidden');
+              murfPlaceholder.classList.add('hidden');
+              // auto-play the response (optional)
+              try { await murfPlayer.play(); } catch (e) { /* autoplay may be blocked */ }
+            }
+
+          } catch (err) {
+            console.error(err);
+            showErrorPopup("Error during upload/transcribe/TTS");
+          } finally {
+            hideLoading();
+            updateStatus('ready');
+          }
+        };
+
+        mediaRecorder.start();
+        startBtn.disabled = true;
+        stopBtn.disabled = false;
+        stopBtn.classList.remove('opacity-70', 'cursor-not-allowed');
+        updateStatus('recording');
+      } catch (err) {
+        console.error(err);
+        showErrorPopup("Microphone access denied");
+      }
+    });
+
+    stopBtn.addEventListener('click', () => {
+      if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+        mediaRecorder.stop();
+        startBtn.disabled = false;
+        stopBtn.disabled = true;
+        stopBtn.classList.add('opacity-70', 'cursor-not-allowed');
+        try { mediaRecorder.stream.getTracks().forEach(track => track.stop()); } catch { }
+      }
+      // === Added: Get or create session_id in URL ===
+      function getSessionId() {
+        const params = new URLSearchParams(window.location.search);
+        let sessionId = params.get("session_id");
+        if (!sessionId) {
+          sessionId = crypto.randomUUID();
+          params.set("session_id", sessionId);
+          window.history.replaceState({}, "", `${window.location.pathname}?${params}`);
+        }
+        return sessionId;
+      }
+      const sessionId = getSessionId();
+      // === End session_id setup ===
+
+      // Start recording
+      function startRecording() {
+        navigator.mediaDevices.getUserMedia({ audio: true })
+          .then(stream => {
+            const mediaRecorder = new MediaRecorder(stream);
+            const audioChunks = [];
+
+            mediaRecorder.addEventListener("dataavailable", event => {
+              audioChunks.push(event.data);
             });
 
-            if (!ttsRes.ok) throw new Error("Murf AI TTS failed");
+            mediaRecorder.addEventListener("stop", () => {
+              const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+              // === Changed: now send to /agent/chat/{session_id} ===
+              const formData = new FormData();
+              formData.append("audio", audioBlob, "recording.wav");
+              formData.append("text", "");
 
-            const audioBlob = await ttsRes.blob();
+              fetch(`/agent/chat/${session_id}`, {
+                method: "POST",
+                body: formData
+              })
 
-            // Play Murf AI audio in second player
-            const murfAudioUrl = URL.createObjectURL(audioBlob);
-            murfPlayer.src = murfAudioUrl;
-            murfPlayer.classList.remove('hidden');
-            murfPlaceholder.classList.add('hidden');
-          }
+                .then(response => response.json())
+                .then(data => {
+                  document.getElementById("responseText").textContent = data.response_text;
 
-        } catch (err) {
-          console.error(err);
-          showErrorPopup("Error during upload/transcribe/TTS");
+                  const audio = new Audio(`data:audio/mp3;base64,${data.response_audio}`);
+                  audio.play();
+
+                  // === Added: auto-restart recording after TTS finishes ===
+                  audio.addEventListener("ended", () => {
+                    startRecording();
+                  });
+                })
+                .catch(error => console.error('Error:', error));
+            });
+
+            mediaRecorder.start();
+            setTimeout(() => {
+              mediaRecorder.stop();
+            }, 5000);
+          });
+      }
+
+      // Stop recording
+      function stopRecording() {
+        // Keeping your original stop function — assuming you had one in your HTML
+        // No changes made here
+      }
+
+      // Start recording on page load
+      startRecording();
+
+
+
+      const BASE_URL = 'http://localhost:8000';
+
+      // UI elements
+      const startBtn = document.getElementById('start-record');
+      const stopBtn = document.getElementById('stop-record');
+      const transcriptionOutput = document.getElementById('transcription');
+      const recordingStatus = document.getElementById('recording-status');
+      const murfPlayer = document.getElementById('murf-player');
+      const murfPlaceholder = document.getElementById('murf-placeholder');
+
+      let mediaRecorder;
+      let audioChunks = [];
+      let sessionId;
+
+      // Helper to get or create a session ID
+      function getSessionId() {
+        const params = new URLSearchParams(window.location.search);
+        let currentSessionId = params.get("session_id");
+        if (!currentSessionId) {
+          currentSessionId = crypto.randomUUID();
+          params.set("session_id", currentSessionId);
+          window.history.replaceState({}, "", `${window.location.pathname}?${params}`);
         }
-        hideLoading();
-        updateStatus('ready');
-      };
+        return currentSessionId;
+      }
 
-      mediaRecorder.start();
-      startBtn.disabled = true;
-      stopBtn.disabled = false;
-      stopBtn.classList.remove('opacity-70', 'cursor-not-allowed');
-      updateStatus('recording');
-    } catch (err) {
-      console.error(err);
-      showErrorPopup("Microphone access denied");
-    }
-  });
+      // Helper to update UI status
+      function updateStatus(status, text) {
+        recordingStatus.className = `status-indicator mb-6 text-sm text-cursor-gray status-${status}`;
+        recordingStatus.textContent = text;
+      }
 
-  stopBtn.addEventListener('click', () => {
-    if (mediaRecorder && mediaRecorder.state !== 'inactive') {
-      mediaRecorder.stop();
-      startBtn.disabled = false;
-      stopBtn.disabled = true;
-      stopBtn.classList.add('opacity-70', 'cursor-not-allowed');
-      mediaRecorder.stream.getTracks().forEach(track => track.stop());
-    }
-  });
-</script>
+      // Start recording function
+      async function startRecording() {
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          mediaRecorder = new MediaRecorder(stream);
+          audioChunks = [];
+
+          mediaRecorder.ondataavailable = event => {
+            audioChunks.push(event.data);
+          };
+
+          mediaRecorder.onstop = async () => {
+            updateStatus('processing', 'Uploading audio for transcription...');
+            const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+
+            const formData = new FormData();
+            formData.append("file", audioBlob, "recording.webm");
+
+            try {
+              const response = await fetch(`${BASE_URL}/agent/chat/${sessionId}`, {
+                method: "POST",
+                body: formData
+              });
+
+              if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`Server error: ${response.status} - ${errorText}`);
+              }
+
+              // Handle the audio stream response directly
+              const audioBlobResponse = await response.blob();
+              const audioUrl = URL.createObjectURL(audioBlobResponse);
+
+              murfPlayer.src = audioUrl;
+              murfPlayer.classList.remove('hidden');
+              murfPlaceholder.classList.add('hidden');
+
+              updateStatus('ready', 'Audio response ready. Playing now...');
+
+              murfPlayer.play();
+              murfPlayer.onended = () => {
+                startRecording();
+              };
+
+            } catch (error) {
+              console.error('Error during chat:', error);
+              updateStatus('error', 'Error occurred. See console for details.');
+            }
+          };
+
+          mediaRecorder.start();
+          updateStatus('recording', 'Recording...');
+          startBtn.disabled = true;
+          stopBtn.disabled = false;
+          stopBtn.classList.remove('opacity-70', 'cursor-not-allowed');
+
+        } catch (error) {
+          console.error('Error accessing microphone:', error);
+          updateStatus('error', 'Microphone access denied.');
+        }
+      }
+
+      // Stop recording function
+      function stopRecording() {
+        if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+          mediaRecorder.stop();
+          startBtn.disabled = false;
+          stopBtn.disabled = true;
+          stopBtn.classList.add('opacity-70', 'cursor-not-allowed');
+          try { mediaRecorder.stream.getTracks().forEach(track => track.stop()); } catch { }
+          updateStatus('processing', 'Transcribing audio...');
+        }
+      }
+
+      // Event listeners
+      startBtn.addEventListener('click', () => {
+        sessionId = getSessionId();
+        startRecording();
+      });
+      stopBtn.addEventListener('click', stopRecording);
+
+      // Initialize session ID on page load
+      sessionId = getSessionId();
+
+
+      
+    });
+
+  </script>
 </body>
+
 </html>
