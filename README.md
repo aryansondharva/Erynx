@@ -1,4 +1,4 @@
-# 🎙️ Erynx — AI Voice Agent
+# Erynx — AI Voice Agent
 
 <div align="center">
 
@@ -12,7 +12,7 @@ A production-ready AI voice agent that creates natural conversations through voi
 
 </div>
 
-## 📋 Overview
+## Overview
 
 Erynx is an intelligent voice interaction platform that:
 - Records your voice through the browser
@@ -21,7 +21,7 @@ Erynx is an intelligent voice interaction platform that:
 - Responds via Murf AI text-to-speech
 - Maintains persistent conversation history
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 ### Backend
 - **Framework**: FastAPI with Uvicorn
@@ -55,7 +55,7 @@ Build, run, and extend a production-ready AI voice agent that records your voice
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
 ```mermaid
 flowchart TB
@@ -138,7 +138,7 @@ flowchart TB
    - Chat history updated
    - Ready for next interaction
 
-## ✨ Key Features
+## Key Features
 
 1. **Complete Voice Pipeline**
    - Voice input → Text transcription → AI processing → Voice response
@@ -165,7 +165,7 @@ flowchart TB
 
 ---
 
-## 🚀 Quick Start Guide
+## Quick Start Guide
 
 ### Prerequisites
 - Python 3.9 or higher
@@ -221,7 +221,7 @@ flowchart TB
 
 > 💡 **Note**: If you modify the port or host, update `BASE_URL` in `static/explore.html`
 
-## 🔑 Environment Variables
+## Environment Variables
 
 | Variable | Description | Required |
 |----------|-------------|----------|
@@ -233,7 +233,7 @@ flowchart TB
 
 ---
 
-## 🔌 API Endpoints
+## API Endpoints
 
 ### Core Endpoints
 
@@ -264,7 +264,7 @@ flowchart TB
 
 > 💡 **Note**: All audio responses stream as `audio/mpeg` when successful
 
-## 🎨 Frontend Architecture
+## Frontend Architecture
 
 ### Pages
 - **Landing Page** (`static/index.html`)
@@ -307,7 +307,7 @@ flowchart TB
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 Erynx/
@@ -325,7 +325,7 @@ Erynx/
 └── uploads/             # Temporary audio storage
 ```
 
-## 🚢 Deployment Guide
+## Deployment Guide
 
 ### Vercel Deployment
 
@@ -349,7 +349,7 @@ The project includes `vercel.json` for serverless deployment. Two options are av
 
 > ⚠️ **Important**: Configure environment variables in your Vercel project settings
 
-## ❗ Troubleshooting Guide
+## Troubleshooting Guide
 
 ### Audio Issues
 - **No Response Audio**
@@ -381,7 +381,7 @@ The project includes `vercel.json` for serverless deployment. Two options are av
   - Verify JSON file integrity
   - Check storage space
 
-## 📸 Screenshots
+## Screenshots
 
 <details>
 <summary>View Screenshots</summary>
@@ -393,7 +393,7 @@ The project includes `vercel.json` for serverless deployment. Two options are av
 
 </details>
 
-## 🙌 Credits & Acknowledgments
+## Credits & Acknowledgments
 
 This project was built as part of the **30 Days of AI Voice Agents** challenge.
 
