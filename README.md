@@ -2,24 +2,37 @@
 
 <div align="center">
 
-![N9NE Logo](static/logos/n9ne-logo.svg)
+![N9NE Logo](static/logos/n9ne-logo.png)
 
 A production-ready AI voice agent that creates natural conversations through voice.
 
 [![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com)
 [![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org)
 [![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com)
+[![AssemblyAI](https://img.shields.io/badge/AssemblyAI-007AFF?style=for-the-badge&logo=assemblyai&logoColor=white)](https://www.assemblyai.com/)
+[![Gemini](https://img.shields.io/badge/Gemini-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://deepmind.google/technologies/gemini/)
+[![Murf AI](https://img.shields.io/badge/Murf_AI-FF6B6B?style=for-the-badge&logo=murf&logoColor=white)](https://murf.ai/)
 
 </div>
 
 ## Overview
 
-Erynx is an intelligent voice interaction platform that:
+N9NE is an intelligent voice interaction platform that:
 - Records your voice through the browser
 - Transcribes speech using AssemblyAI
 - Processes requests with Google's Gemini LLM
 - Responds via Murf AI text-to-speech
 - Maintains persistent conversation history
+
+## Live Demo
+
+🚀 **Try N9NE AI Voice Agent Now!**
+
+- **Local Demo**: Run the application locally and visit `http://localhost:8000`
+- **Voice Agent Interface**: Access the full voice interaction at `http://localhost:8000/static/explore.html`
+- **Real-time Conversation**: Experience natural voice conversations with AI
+
+> 💡 **Note**: Make sure to configure your API keys in the `.env` file for full functionality.
 
 ## Tech Stack
 
@@ -42,7 +55,7 @@ Erynx is an intelligent voice interaction platform that:
 ### Storage
 - **Chat History**: JSON file persistence
 
-Build, run, and extend a production-ready AI voice agent that records your voice, transcribes with AssemblyAI, reasons with Gemini, replies via Murf AI TTS, and keeps persistent chat history. A clean frontend powered by Tailwind + vanilla JS drives the experience.
+N9NE is a production-ready AI voice agent that records your voice, transcribes with AssemblyAI, reasons with Gemini, replies via Murf AI TTS, and keeps persistent chat history. A clean frontend powered by Tailwind + vanilla JS drives the experience.
 
 ---
 
@@ -395,7 +408,7 @@ The project includes `vercel.json` for serverless deployment. Two options are av
 
 ## Credits & Acknowledgments
 
-This project was built as part of the **30 Days of AI Voice Agents** challenge.
+N9NE was built as part of the **30 Days of AI Voice Agents** challenge.
 
 ### Services Used
 - [AssemblyAI](https://www.assemblyai.com/) - Speech Recognition
