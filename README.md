@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![Erynx Logo](static/logo/microphone)
+![N9NE Logo](static/logos/n9ne-logo.svg)
 
 A production-ready AI voice agent that creates natural conversations through voice.
 
