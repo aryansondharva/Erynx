@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![N9NE Logo](static/logos/n9ne-logo.png)
+![N9NE Logo](static/logos/n9ne-logo-new.png)
 
 A production-ready AI voice agent that creates natural conversations through voice.
 
