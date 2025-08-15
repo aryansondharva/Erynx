@@ -6,12 +6,12 @@
 
 A production-ready AI voice agent that creates natural conversations through voice.
 
+[![Murf AI](https://img.shields.io/badge/Murf_AI-FF6B6B?style=for-the-badge&logo=murf&logoColor=white)](https://murf.ai/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com)
 [![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org)
 [![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com)
 [![AssemblyAI](https://img.shields.io/badge/AssemblyAI-007AFF?style=for-the-badge&logo=assemblyai&logoColor=white)](https://www.assemblyai.com/)
 [![Gemini](https://img.shields.io/badge/Gemini-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://deepmind.google/technologies/gemini/)
-[![Murf AI](https://img.shields.io/badge/Murf_AI-FF6B6B?style=for-the-badge&logo=murf&logoColor=white)](https://murf.ai/)
 
 </div>
 
