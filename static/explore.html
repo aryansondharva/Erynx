@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI Voice Explorer</title>
+  <title>Erynx AI Voice Agent</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -148,15 +148,58 @@
     }
 
     @keyframes pulse {
-
       0%,
       100% {
         opacity: 1;
       }
-
       50% {
         opacity: 0.5;
       }
+    }
+
+    /* Enhanced record button animations */
+    @keyframes recording-pulse {
+      0%, 100% { 
+        transform: scale(1);
+        box-shadow: 0 0 20px rgba(239, 68, 68, 0.5);
+      }
+      50% { 
+        transform: scale(1.1);
+        box-shadow: 0 0 30px rgba(239, 68, 68, 0.8);
+      }
+    }
+
+    @keyframes recording-glow {
+      0%, 100% { 
+        box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+      }
+      50% { 
+        box-shadow: 0 0 40px rgba(239, 68, 68, 0.6);
+      }
+    }
+
+    .recording-active {
+      animation: recording-pulse 1.5s ease-in-out infinite;
+    }
+
+    .recording-glow {
+      animation: recording-glow 2s ease-in-out infinite;
+    }
+
+    /* Button state transitions */
+    .record-button-ready {
+      background: linear-gradient(135deg, #10B981, #059669);
+      border-color: #10B981;
+    }
+
+    .record-button-recording {
+      background: linear-gradient(135deg, #EF4444, #DC2626);
+      border-color: #EF4444;
+    }
+
+    .record-button-processing {
+      background: linear-gradient(135deg, #F59E0B, #D97706);
+      border-color: #F59E0B;
     }
   </style>
 </head>
@@ -195,9 +238,12 @@
     <div class="max-w-3xl mx-auto">
       <!-- Header -->
       <div class="text-center mb-10">
-        <h1 class="text-3xl font-bold text-cursor-dark mb-3">AI Voice Explorer</h1>
-        <p class="text-cursor-gray max-w-lg mx-auto">Record your voice and transform it with Murf AI's realistic voice
-          synthesis technology.</p>
+        <h1 class="text-3xl font-bold text-cursor-dark mb-3">AI Voice Agent</h1>
+        <p class="text-cursor-gray max-w-lg mx-auto">Have natural conversations with our AI voice agent. 
+          Simply speak and get intelligent, contextual responses in real-time.</p>
+        <div id="session-info" class="mt-4 text-xs text-cursor-gray bg-cursor-light px-3 py-2 rounded-lg inline-block">
+          <span class="font-medium">Session:</span> <span id="session-display">Loading...</span>
+        </div>
       </div>
 
       <!-- Recorder Card -->
@@ -208,34 +254,43 @@
           </div>
 
           <!-- Recording Controls -->
-          <div class="flex flex-col sm:flex-row gap-3 mb-8 w-full max-w-xs mx-auto">
-            <button id="start-record"
-              class="btn-success text-white px-6 py-3 rounded-lg font-medium flex items-center justify-center gap-2 transition-all hover:scale-[1.02]">
+          <div class="flex justify-center mb-8 w-full">
+            <button id="record-button"
+              class="group relative w-24 h-24 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white rounded-full font-medium flex flex-col items-center justify-center gap-2 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl border-4 border-white">
               <div class="relative">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+                <svg id="record-icon" xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z" />
                   <path d="M15.5 12a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z" />
                 </svg>
-                <div class="absolute inset-0 rounded-full bg-current opacity-10 animate-ping"></div>
+                <svg id="stop-icon" xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 hidden" viewBox="0 0 24 24" fill="currentColor">
+                  <rect x="6" y="6" width="12" height="12" rx="1" />
+                </svg>
               </div>
-              <span>Start Recording</span>
+              <span id="record-text" class="text-xs font-semibold">Record</span>
+              <div class="absolute inset-0 rounded-full bg-red-400 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
             </button>
-
-            <button id="stop-record"
-              class="btn-danger text-white px-6 py-3 rounded-lg font-medium opacity-70 cursor-not-allowed flex items-center justify-center gap-2 transition-all"
-              disabled>
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
-                <rect x="6" y="6" width="12" height="12" rx="1" />
-              </svg>
-              <span>Stop</span>
+          </div>
+          
+          <!-- Auto-Recording Status -->
+          <div id="auto-recording-status" class="hidden text-center mb-4">
+            <div class="text-sm text-cursor-gray bg-cursor-light px-3 py-2 rounded-lg">
+              <span class="font-medium">🔄 Auto-recording enabled</span>
+              <br>
+              <span class="text-xs">Recording will start automatically after AI response</span>
+            </div>
+            <button id="manual-auto-restart" class="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg text-sm hover:bg-blue-600 transition">
+              🔄 Manual Auto-Restart
+            </button>
+            <button id="test-auto-restart" class="mt-2 ml-2 px-4 py-2 bg-green-500 text-white rounded-lg text-sm hover:bg-green-600 transition">
+              🧪 Test Auto-Restart
             </button>
           </div>
 
-          <!-- Audio Players -->
-          <div class="w-full space-y-6">
+          <!-- Audio Players (Hidden) -->
+          <div class="w-full space-y-6 hidden">
             <div>
               <h3 class="text-sm font-medium text-cursor-gray mb-2">Your Recording</h3>
-              <audio id="echo-player" controls class="w-full hidden"></audio>
+              <audio id="echo-player" class="w-full hidden"></audio>
               <div id="playback-placeholder"
                 class="bg-cursor-light border border-cursor-border rounded-lg p-8 text-center text-cursor-gray">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mx-auto mb-2 text-cursor-gray" fill="none"
@@ -249,7 +304,7 @@
 
             <div>
               <h3 class="text-sm font-medium text-cursor-gray mb-2">Murf AI Voice</h3>
-              <audio id="murf-player" controls class="w-full hidden"></audio>
+              <audio id="murf-player" class="w-full hidden"></audio>
               <div id="murf-placeholder"
                 class="bg-cursor-light border border-cursor-border rounded-lg p-8 text-center text-cursor-gray">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mx-auto mb-2 text-cursor-gray" fill="none"
@@ -264,6 +319,20 @@
         </div>
       </div>
 
+      <!-- Chat History Card -->
+      <div class="card rounded-xl p-6 mb-6">
+        <h2 class="text-lg font-semibold text-cursor-dark mb-4 flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M8 12a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+            <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+          </svg>
+          Chat History
+        </h2>
+        <div id="chat-history" class="bg-cursor-light rounded-lg p-4 text-sm text-cursor-gray max-h-64 overflow-y-auto">
+          <div class="text-center text-cursor-gray">No messages yet. Start recording to begin the conversation.</div>
+        </div>
+      </div>
+
       <!-- Transcription Card -->
       <div class="card rounded-xl p-6">
         <h2 class="text-lg font-semibold text-cursor-dark mb-4 flex items-center gap-2">
@@ -271,7 +340,7 @@
             <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 0v12h8V4H6z"
               clip-rule="evenodd" />
           </svg>
-          Transcription
+          Latest Transcription
         </h2>
         <div id="transcription" class="bg-cursor-light rounded-lg p-4 text-sm text-cursor-gray">
           No transcription yet. Record and upload to view it here.
@@ -282,7 +351,7 @@
 
   <!-- Toasts -->
   <div id="popup"
-    class="hidden fixed top-4 right-4 bg-white px-4 py-2.5 rounded-lg shadow-sm border border-cursor-border text-sm font-medium z-50 flex items-center gap-2 animate-slideIn">
+    class="hidden fixed top-12 right-4 bg-white px-4 py-2.5 rounded-lg shadow-sm border border-cursor-border text-sm font-medium z-50 flex items-center gap-2 animate-slideIn">
     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-green-500" viewBox="0 0 20 20" fill="currentColor">
       <path fill-rule="evenodd"
         d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
@@ -307,7 +376,7 @@
         d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z"
         clip-rule="evenodd" />
     </svg>
-    Uploading audio...
+    <span>Processing...</span>
   </div>
 
   <!-- Footer -->
@@ -372,10 +441,22 @@
   </footer>
 
   <script>
-    /* ====== DAY 9 JS: record -> transcribe -> llm/query -> play audio ====== */
+    /* ====== DAY 10 JS: Chat History with Session Management ====== */
 
     // Change this to your backend origin if needed
-    const BASE_URL = 'http://localhost:8000';
+    const BASE_URL = 'http://127.0.0.1:8000';
+
+    // Session Management
+    function getSessionId() {
+      const params = new URLSearchParams(window.location.search);
+      let sessionId = params.get("session_id");
+      if (!sessionId) {
+        sessionId = crypto.randomUUID();
+        params.set("session_id", sessionId);
+        window.history.replaceState({}, "", `${window.location.pathname}?${params}`);
+      }
+      return sessionId;
+    }
 
     // Toast Helpers
     const showPopup = () => {
@@ -389,24 +470,34 @@
       setTimeout(() => document.getElementById("error-popup").classList.add("hidden"), 4000);
     }
 
-    const showLoading = (txt = "Uploading audio...") => {
-      document.getElementById("loading").classList.remove("hidden");
-      document.getElementById("loading").querySelector('svg').classList.add('animate-spin');
+    const showLoading = (txt = "Processing...") => {
+      const loadingEl = document.getElementById("loading");
+      loadingEl.querySelector('span').textContent = txt;
+      loadingEl.classList.remove("hidden");
+      loadingEl.querySelector('svg').classList.add('animate-spin');
     };
+    
     const hideLoading = () => {
       document.getElementById("loading").classList.add("hidden");
       document.getElementById("loading").querySelector('svg').classList.remove('animate-spin');
     };
 
     let mediaRecorder, echoChunks = [];
-    const startBtn = document.getElementById('start-record');
-    const stopBtn = document.getElementById('stop-record');
+    let isRecording = false;
+    const recordBtn = document.getElementById('record-button');
+    const recordIcon = document.getElementById('record-icon');
+    const stopIcon = document.getElementById('stop-icon');
+    const recordText = document.getElementById('record-text');
     const echoPlayer = document.getElementById('echo-player');
     const statusText = document.getElementById('recording-status');
     const playbackPlaceholder = document.getElementById('playback-placeholder');
     const transcriptionOutput = document.getElementById('transcription');
     const murfPlayer = document.getElementById('murf-player');
     const murfPlaceholder = document.getElementById('murf-placeholder');
+    const chatHistory = document.getElementById('chat-history');
+    const autoRecordingStatus = document.getElementById('auto-recording-status');
+    const manualAutoRestartBtn = document.getElementById('manual-auto-restart');
+    const testAutoRestartBtn = document.getElementById('test-auto-restart');
 
     // Update status indicator
     const updateStatus = (status) => {
@@ -415,179 +506,369 @@
         status === 'recording' ? 'Recording...' : 'Processing...';
     };
 
-    // helper: send formData to endpoint and return JSON
-    async function postFormDataJson(url, formData) {
-      const res = await fetch(url, { method: 'POST', body: formData });
-      const text = await res.text(); // handle non-json errors
-      try { return { ok: res.ok, status: res.status, json: JSON.parse(text) }; }
-      catch (e) { return { ok: res.ok, status: res.status, text }; }
-    }
+    // Update record button state
+    const updateRecordButton = (state) => {
+      recordBtn.className = recordBtn.className.replace(/record-button-\w+/g, '');
+      recordBtn.classList.add(`record-button-${state}`);
+      
+      if (state === 'recording') {
+        recordIcon.classList.add('hidden');
+        stopIcon.classList.remove('hidden');
+        recordText.textContent = 'Stop';
+        recordBtn.classList.add('recording-active', 'recording-glow');
+      } else if (state === 'processing') {
+        recordIcon.classList.remove('hidden');
+        stopIcon.classList.add('hidden');
+        recordText.textContent = 'Processing...';
+        recordBtn.classList.remove('recording-active', 'recording-glow');
+      } else {
+        recordIcon.classList.remove('hidden');
+        stopIcon.classList.add('hidden');
+        recordText.textContent = 'Record';
+        recordBtn.classList.remove('recording-active', 'recording-glow');
+      }
+    };
 
-    startBtn.addEventListener('click', async () => {
+    // Auto-start recording after TTS response finishes
+    const autoStartRecording = async () => {
+      console.log('Auto-starting recording...');
+      
+      // Show auto-recording status
+      if (autoRecordingStatus) {
+        autoRecordingStatus.classList.remove('hidden');
+      }
+      
+      // Show countdown in status
+      updateStatus('ready');
+      updateRecordButton('ready');
+      statusText.textContent = 'Auto-recording in 3...';
+      
+      setTimeout(() => {
+        statusText.textContent = 'Auto-recording in 2...';
+      }, 500);
+      
+      setTimeout(() => {
+        statusText.textContent = 'Auto-recording in 1...';
+      }, 1000);
+      
+      setTimeout(async () => {
+        try {
+          // Check if we can access the microphone
+          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          
+          // If we can get the stream, start recording
+          if (recordBtn && !isRecording) {
+            console.log('Starting auto-recording...');
+            recordBtn.click();
+          } else {
+            console.log('Record button not available or already recording');
+            // Try to start recording if not already recording
+            if (recordBtn && !isRecording) {
+              recordBtn.click();
+            }
+          }
+        } catch (err) {
+          console.error('Auto-start recording failed:', err);
+          showErrorPopup('Auto-recording failed. Please click Record manually.');
+          isRecording = false;
+          updateRecordButton('ready');
+          updateStatus('ready');
+        }
+      }, 1500); // Increased delay to ensure audio has finished
+    };
+    
+    // Alternative auto-start function that directly starts recording
+    const forceStartRecording = async () => {
+      console.log('Force starting recording...');
       try {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         mediaRecorder = new MediaRecorder(stream);
         echoChunks = [];
 
-        mediaRecorder.ondataavailable = e => { if (e.data && e.data.size > 0) echoChunks.push(e.data); };
+        mediaRecorder.ondataavailable = e => { 
+          if (e.data && e.data.size > 0) echoChunks.push(e.data); 
+        };
 
         mediaRecorder.onstop = async () => {
-          // build blob (we use webm because MediaRecorder default is often webm)
           const blob = new Blob(echoChunks, { type: 'audio/webm' });
           const url = URL.createObjectURL(blob);
 
-          // show the original recording
           echoPlayer.src = url;
           echoPlayer.classList.remove('hidden');
           playbackPlaceholder.classList.add('hidden');
 
-          // hide murf audio until ready
           murfPlayer.classList.add('hidden');
           murfPlaceholder.classList.remove('hidden');
 
-          updateStatus('processing');
-          showLoading();
-
-          try {
-            const formData = new FormData();
-            // NOTE: server endpoints expect field name "file" for transcribe/file and llm/query accepts UploadFile param
-            formData.append('file', blob, 'recording.webm');
-
-            // 1) Get quick transcription (so user can see what they said)
-            const transRes = await fetch(`${BASE_URL}/transcribe/file`, { method: 'POST', body: formData });
-            if (!transRes.ok) {
-              // Try to parse error message
-              const errText = await transRes.text().catch(() => 'Transcription error');
-              console.warn('Transcribe failed:', transRes.status, errText);
-              transcriptionOutput.textContent = "Transcription failed.";
-            } else {
-              const transData = await transRes.json();
-              transcriptionOutput.textContent = transData.transcription || "No transcription returned.";
-              showPopup();
-            }
-
-            // 2) Call Day 9 full pipeline -> /llm/query which returns MP3 audio
-            // Re-create formData because Fetch bodies can be consumed only once
-            const form2 = new FormData();
-            form2.append('file', blob, 'recording.webm');
-            // optionally send voice type: default, narrator, support, etc.
-            form2.append('voice', 'default');
-
-            const llmRes = await fetch(`${BASE_URL}/llm/query`, { method: 'POST', body: form2 });
-
-            if (!llmRes.ok) {
-              // try to read text error
-              const errText = await llmRes.text().catch(() => 'LLM pipeline failed');
-              console.error('llm/query failed', llmRes.status, errText);
-              showErrorPopup('LLM pipeline failed — check server logs.');
-            } else {
-              const audioBlob = await llmRes.blob();
-
-              // create URL and play
-              const murfAudioUrl = URL.createObjectURL(audioBlob);
-              murfPlayer.src = murfAudioUrl;
-              murfPlayer.classList.remove('hidden');
-              murfPlaceholder.classList.add('hidden');
-              // auto-play the response (optional)
-              try { await murfPlayer.play(); } catch (e) { /* autoplay may be blocked */ }
-            }
-
-          } catch (err) {
-            console.error(err);
-            showErrorPopup("Error during upload/transcribe/TTS");
-          } finally {
-            hideLoading();
-            updateStatus('ready');
-          }
+          await getTranscription(blob);
+          await processAudioWithHistory(blob);
         };
 
         mediaRecorder.start();
-        startBtn.disabled = true;
-        stopBtn.disabled = false;
-        stopBtn.classList.remove('opacity-70', 'cursor-not-allowed');
+        isRecording = true;
+        updateRecordButton('recording');
         updateStatus('recording');
+        
+        if (autoRecordingStatus) {
+          autoRecordingStatus.classList.add('hidden');
+        }
+        
+        console.log('Force recording started successfully');
+      } catch (err) {
+        console.error('Force recording failed:', err);
+        showErrorPopup('Recording failed. Please try again.');
+        isRecording = false;
+        updateRecordButton('ready');
+      }
+    };
+
+    // Process audio with chat history
+    const processAudioWithHistory = async (audioBlob) => {
+      const sessionId = getSessionId();
+      
+      try {
+        const formData = new FormData();
+        formData.append('file', audioBlob, 'recording.webm');
+        formData.append('voice', 'default');
+
+        showLoading("Processing with chat history...");
+        updateStatus('processing');
+
+        // Call the chat history endpoint
+        const response = await fetch(`${BASE_URL}/agent/chat/${sessionId}`, {
+          method: 'POST',
+          body: formData
+        });
+
+        if (!response.ok) {
+          const errorText = await response.text().catch(() => 'Chat history processing failed');
+          console.error('agent/chat failed', response.status, errorText);
+          showErrorPopup('Chat history processing failed — check server logs.');
+          updateStatus('ready');
+          return;
+        }
+
+        const responseBlob = await response.blob();
+        const murfAudioUrl = URL.createObjectURL(responseBlob);
+        
+        murfPlayer.src = murfAudioUrl;
+        murfPlayer.classList.remove('hidden');
+        murfPlaceholder.classList.add('hidden');
+        
+        // Auto-play the response and restart recording when it finishes
+        try {
+          await murfPlayer.play();
+          console.log('Audio playing, will auto-restart recording when finished');
+          
+          // Set up multiple event listeners to ensure we catch the end
+          const handleAudioEnd = () => {
+            console.log('Audio ended, triggering auto-restart');
+            autoStartRecording();
+          };
+          
+          murfPlayer.addEventListener('ended', handleAudioEnd, { once: true });
+          murfPlayer.addEventListener('pause', handleAudioEnd, { once: true });
+          
+          // Also set a timeout as backup in case events don't fire
+          const audioDuration = murfPlayer.duration || 5; // Default 5 seconds if duration unknown
+          setTimeout(() => {
+            console.log('Audio timeout backup, triggering auto-restart');
+            autoStartRecording();
+          }, (audioDuration * 1000) + 2000); // Audio duration + 2 seconds buffer
+          
+        } catch (e) {
+          console.warn('Autoplay blocked, user will need to click play');
+          // If autoplay is blocked, still set up the ended event
+          const handleAudioEnd = () => {
+            console.log('Audio ended (manual play), triggering auto-restart');
+            autoStartRecording();
+          };
+          
+          murfPlayer.addEventListener('ended', handleAudioEnd, { once: true });
+          murfPlayer.addEventListener('pause', handleAudioEnd, { once: true });
+        }
+
+        showPopup();
+        isRecording = false;
+        updateRecordButton('ready');
+        updateStatus('ready');
+        
+        // Update chat history display
+        await updateChatHistory();
+
       } catch (err) {
         console.error(err);
-        showErrorPopup("Microphone access denied");
+        showErrorPopup("Error during chat history processing");
+        isRecording = false;
+        updateRecordButton('ready');
+        updateStatus('ready');
+      } finally {
+        hideLoading();
+      }
+    };
+
+    // Update chat history display
+    const updateChatHistory = async () => {
+      const sessionId = getSessionId();
+      try {
+        const response = await fetch(`${BASE_URL}/agent/chat/${sessionId}/history`);
+        if (response.ok) {
+          const data = await response.json();
+          if (data.messages && data.messages.length > 0) {
+            const historyHtml = data.messages.map(msg => {
+              const isUser = msg.role === 'user';
+              const bgColor = isUser ? 'bg-blue-50' : 'bg-green-50';
+              const borderColor = isUser ? 'border-blue-200' : 'border-green-200';
+              const textColor = isUser ? 'text-blue-900' : 'text-green-900';
+              const roleText = isUser ? 'You' : 'Assistant';
+              
+              return `
+                <div class="mb-3 p-3 rounded-lg border ${bgColor} ${borderColor}">
+                  <div class="text-xs font-medium ${textColor} mb-1">${roleText}</div>
+                  <div class="text-sm ${textColor}">${msg.content}</div>
+                </div>
+              `;
+            }).join('');
+            chatHistory.innerHTML = historyHtml;
+            chatHistory.scrollTop = chatHistory.scrollHeight; // Auto-scroll to bottom
+          } else {
+            chatHistory.innerHTML = '<div class="text-center text-cursor-gray">No messages yet. Start recording to begin the conversation.</div>';
+          }
+        }
+      } catch (err) {
+        console.error('Error fetching chat history:', err);
+      }
+    };
+
+    // Get quick transcription for display
+    const getTranscription = async (audioBlob) => {
+      try {
+        const formData = new FormData();
+        formData.append('file', audioBlob, 'recording.webm');
+
+        const transRes = await fetch(`${BASE_URL}/transcribe/file`, { method: 'POST', body: formData });
+        if (!transRes.ok) {
+          const errText = await transRes.text().catch(() => 'Transcription error');
+          console.warn('Transcribe failed:', transRes.status, errText);
+          transcriptionOutput.textContent = "Transcription failed.";
+        } else {
+          const transData = await transRes.json();
+          transcriptionOutput.textContent = transData.transcription || "No transcription returned.";
+        }
+      } catch (err) {
+        console.error('Transcription error:', err);
+        transcriptionOutput.textContent = "Transcription error.";
+      }
+    };
+
+    recordBtn.addEventListener('click', async () => {
+      if (isRecording) {
+        // Stop recording
+        if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+          mediaRecorder.stop();
+          isRecording = false;
+          updateRecordButton('processing');
+          updateStatus('processing');
+          try { 
+            mediaRecorder.stream.getTracks().forEach(track => track.stop()); 
+          } catch (e) {
+            console.warn('Error stopping tracks:', e);
+          }
+        }
+      } else {
+        // Start recording
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          mediaRecorder = new MediaRecorder(stream);
+          echoChunks = [];
+
+          mediaRecorder.ondataavailable = e => { 
+            if (e.data && e.data.size > 0) echoChunks.push(e.data); 
+          };
+
+          mediaRecorder.onstop = async () => {
+            // build blob (we use webm because MediaRecorder default is often webm)
+            const blob = new Blob(echoChunks, { type: 'audio/webm' });
+            const url = URL.createObjectURL(blob);
+
+            // show the original recording
+            echoPlayer.src = url;
+            echoPlayer.classList.remove('hidden');
+            playbackPlaceholder.classList.add('hidden');
+
+            // hide murf audio until ready
+            murfPlayer.classList.add('hidden');
+            murfPlaceholder.classList.remove('hidden');
+
+            // Get transcription for display
+            await getTranscription(blob);
+
+            // Process with chat history
+            await processAudioWithHistory(blob);
+          };
+
+          mediaRecorder.start();
+          isRecording = true;
+          updateRecordButton('recording');
+          updateStatus('recording');
+          
+          // Hide auto-recording status when recording starts
+          if (autoRecordingStatus) {
+            autoRecordingStatus.classList.add('hidden');
+          }
+        } catch (err) {
+          console.error(err);
+          showErrorPopup("Microphone access denied");
+          isRecording = false;
+          updateRecordButton('ready');
+        }
       }
     });
 
-    stopBtn.addEventListener('click', () => {
-      if (mediaRecorder && mediaRecorder.state !== 'inactive') {
-        mediaRecorder.stop();
-        startBtn.disabled = false;
-        stopBtn.disabled = true;
-        stopBtn.classList.add('opacity-70', 'cursor-not-allowed');
-        try { mediaRecorder.stream.getTracks().forEach(track => track.stop()); } catch { }
-      }
-      // === Added: Get or create session_id in URL ===
-      function getSessionId() {
-        const params = new URLSearchParams(window.location.search);
-        let sessionId = params.get("session_id");
-        if (!sessionId) {
-          sessionId = crypto.randomUUID();
-          params.set("session_id", sessionId);
-          window.history.replaceState({}, "", `${window.location.pathname}?${params}`);
-        }
-        return sessionId;
-      }
+    // Manual auto-restart button event listener
+    if (manualAutoRestartBtn) {
+      manualAutoRestartBtn.addEventListener('click', () => {
+        console.log('Manual auto-restart triggered');
+        forceStartRecording();
+      });
+    }
+
+    // Initialize session ID on page load
+    document.addEventListener('DOMContentLoaded', () => {
       const sessionId = getSessionId();
-      // === End session_id setup ===
-
-      // Start recording
-      function startRecording() {
-        navigator.mediaDevices.getUserMedia({ audio: true })
-          .then(stream => {
-            const mediaRecorder = new MediaRecorder(stream);
-            const audioChunks = [];
-
-            mediaRecorder.addEventListener("dataavailable", event => {
-              audioChunks.push(event.data);
-            });
-
-            mediaRecorder.addEventListener("stop", () => {
-              const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-              // === Changed: now send to /agent/chat/{session_id} ===
-              const formData = new FormData();
-              formData.append("audio", audioBlob, "recording.wav");
-              formData.append("text", "");
-
-              fetch(`/agent/chat/${session_id}`, {
-                method: "POST",
-                body: formData
-              })
-
-                .then(response => response.json())
-                .then(data => {
-                  document.getElementById("responseText").textContent = data.response_text;
-
-                  const audio = new Audio(`data:audio/mp3;base64,${data.response_audio}`);
-                  audio.play();
-
-                  // === Added: auto-restart recording after TTS finishes ===
-                  audio.addEventListener("ended", () => {
-                    startRecording();
-                  });
-                })
-                .catch(error => console.error('Error:', error));
-            });
-
-            mediaRecorder.start();
-            setTimeout(() => {
-              mediaRecorder.stop();
-            }, 5000);
-          });
+      const sessionDisplay = document.getElementById('session-display');
+      if (sessionDisplay) {
+        sessionDisplay.textContent = sessionId.substring(0, 8) + '...';
+        sessionDisplay.title = sessionId; // Full ID on hover
       }
-
-      // Stop recording
-      function stopRecording() {
-        // Keeping your original stop function — assuming you had one in your HTML
-        // No changes made here
+      console.log('Session ID initialized:', sessionId);
+      
+      // Initialize record button state
+      updateRecordButton('ready');
+      
+      // Load initial chat history
+      updateChatHistory();
+      
+      // Show auto-recording status on first load
+      if (autoRecordingStatus) {
+        autoRecordingStatus.classList.remove('hidden');
       }
-
-      // Start recording on page load
-      startRecording();
-
+      
+      // Set up manual auto-restart button
+      if (manualAutoRestartBtn) {
+        manualAutoRestartBtn.addEventListener('click', () => {
+          console.log('Manual auto-restart triggered');
+          forceStartRecording();
+        });
+      }
+      
+      // Set up test auto-restart button
+      if (testAutoRestartBtn) {
+        testAutoRestartBtn.addEventListener('click', () => {
+          console.log('Test auto-restart triggered');
+          autoStartRecording();
+        });
+      }
     });
   </script>
 </body>
