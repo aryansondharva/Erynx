@@ -44,7 +44,7 @@ transcriber = aai.Transcriber()
 # ============================================================
 # 🔹 FastAPI App
 # ============================================================
-app = FastAPI()
+app = FastAPI(title="N9NE AI Voice Agent")
 
 # Enable CORS
 app.add_middleware(

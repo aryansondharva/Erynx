@@ -1,4 +1,4 @@
-# Erynx — AI Voice Agent
+# N9NE — AI Voice Agent
 
 <div align="center">
 
@@ -310,7 +310,7 @@ flowchart TB
 ## Project Structure
 
 ```
-Erynx/
+N9NE/
 ├── main.py                 # FastAPI application & endpoints
 ├── manage_chat.py         # Interactive chat history manager
 ├── simple_chat_manager.py # CLI helper (non-interactive)
